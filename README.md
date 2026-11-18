@@ -1,7 +1,13 @@
 # CorText Chat — Android app (main chat only)
 
-A minimal Android app that talks to a CorText hub. Main chat only —
-nothing else. The other capabilities stay in the web UI.
+The Android companion for **[Sahand-CorText](https://github.com/sahand363/sahand-cortext)**,
+the self-hosted AI workspace. It is a minimal client for the hub's
+main chat — nothing else; the other capabilities stay in the web UI.
+You need a running Sahand-CorText hub to use it (see
+[Setup](#setup) below).
+
+**Download:** the latest APK is on the
+[Releases](https://github.com/sahand363/sahand-cortext-android/releases) page.
 
 <p align="center"><img src="docs/screenshots/chat.webp" alt="CorText Chat — chat screen" width="300"></p>
 
@@ -43,39 +49,68 @@ nothing else. The other capabilities stay in the web UI.
   reopen the chat to see an answer. A network error mid-stream no
   longer retries on the other scheme (that re-sent the message).
 
-## How it connects (v2 — token-based, PROTOCOL-v2.md)
+## Setup
 
-The hub (CorText) owns the mobile feature. The app talks to the hub's
-`/api/mobile/*` endpoints directly, or to a **relay** on a middle
-server (default port 8080) which forwards to the hub. See
-`../PROTOCOL-v2.md` for the full contract. (v1's Python gateway on
-the hub is gone; v1's username/password + tunnel key are gone.)
+1. Install [Sahand-CorText](https://github.com/sahand363/sahand-cortext)
+   on your server (its one-line installer) and open the web panel.
+2. In the panel, open **Mobile App** and turn mobile access on. The
+   page shows the **token** and the hub's port.
+3. Install the APK on your phone and open **Settings**:
+   - **Server**: the hub's IP or domain (or the relay's, see below).
+   - **Mode**: *Direct* or *Relay*.
+   - **Port**: the hub's port from the Mobile App page (8787 on a
+     default install), or the relay's port (8080 by default).
+   - **Token**: paste the token from the Mobile App page.
+4. Tap **Save**. The app checks that the hub is reachable and accepts
+   the token, then opens your chats.
 
-- **The token**: the ONLY credential. It is copied from the hub's
-  Mobile page into the app's settings, and it is both the encryption
-  key (`SHA-256(token)`) and the auth credential — the hub verifies
-  it by decrypting the request body, so the token is never sent in
-  plaintext. There is no username, no password, and no separate
-  tunnel key.
-- **Activation**: saving settings runs two checks — a plain
-  `GET /api/mobile/health` (reachability + is mobile activated on
-  the hub?) and an encrypted `POST /api/mobile/sessions` (does the
-  hub accept this token?). Only when both pass is the app activated
-  and the chat opened. "Test connection" runs the same two checks
-  without leaving the screen.
-- **Mode**: Direct (to the hub, port 8788) or Relay (through the
-  middle server). The port is a separate field, so any port works.
-- **SSL**: Auto (default) tries HTTPS first and falls back to HTTP,
-  remembering which worked. It re-probes HTTPS once an hour, so when
-  a certificate is added later the app upgrades automatically.
-  On = HTTPS only, Off = HTTP only.
-- **Encryption**: the chat is encrypted with the token
-  (HMAC-SHA256 stream cipher, see `Crypto.kt`) *before* it touches
-  the network — so it is private even over plain HTTP with no SSL.
-  TLS is a second layer on top. The app runs the PROTOCOL-v2.md test
-  vector as a self-check on startup; if it fails, it says so.
-- **Timeouts**: 600s read timeout (the model can take minutes),
-  10s connect timeout.
+## How it connects
+
+```
+Direct:  Android app  ──encrypted──▶  Sahand-CorText hub  ──▶  AI providers
+Relay:   Android app  ──encrypted──▶  cortext-relay  ──▶  hub  ──▶  AI providers
+```
+
+The hub owns the mobile feature: the app only talks to the hub's
+`/api/mobile/*` endpoints. The AI providers only ever see the hub —
+never your phone or its IP. Chats are the same ones the web panel
+shows, so a chat started in one place continues in the other.
+
+- **Direct mode**: the app connects straight to the hub. Use it when
+  the phone can reach the hub's port (same network, VPN, or an open
+  port). If you put the hub behind a domain with HTTPS (the control
+  menu's Caddy option), use the domain and port 443.
+- **Relay mode**: the app connects to `cortext-relay` on a middle
+  server, which forwards to the hub. Useful when the hub itself should
+  not be exposed, or the phone reaches the middle server more easily.
+  The relay is a dumb pass-through: it holds no token, never
+  decrypts, and streams replies through chunk by chunk. The hub's
+  Mobile App page gives a one-line command to install and start it.
+- **The token is the only credential**. It is both the encryption key
+  (`SHA-256(token)`) and the proof of access: the hub checks it by
+  decrypting the request, so the token itself never crosses the
+  network. No username, no password. Regenerating it on the hub's
+  Mobile App page locks out the old one.
+- **Encryption**: every request and reply is encrypted with the token
+  (HMAC-SHA256 stream cipher with a MAC, see `Crypto.kt`) before it
+  touches the network, so chats stay private even over plain HTTP.
+  TLS, when you have it, is a second layer. The app runs a known test
+  vector on startup as a self-check.
+- **SSL setting**: *Auto* (default) tries HTTPS first and falls back
+  to HTTP, remembering what worked, and re-tries HTTPS hourly, so it
+  upgrades on its own once you add a certificate. *On* = HTTPS only,
+  *Off* = HTTP only.
+- **Activation**: Save (and "Test connection") runs two checks: a
+  plain `GET /api/mobile/health` (is the hub reachable, is mobile
+  access on?) and an encrypted `POST /api/mobile/sessions` (does the
+  hub accept this token?).
+- **Replies stream** over `POST /api/mobile/chat/stream` (encrypted
+  server-sent events): the answer appears word by word. While a model
+  is thinking, the hub sends a heartbeat every 15s so proxies keep the
+  connection open; if the stream still drops, the app pulls the
+  finished reply from the hub's history.
+- **Timeouts**: 10s to connect, 600s to read (a model can take
+  minutes).
 
 ## Screens
 
