@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Display font, matching the CorText panel: Manrope Bold for the
+     top-bar title and the settings title, with Vazirmatn Bold as the
+     fallback for Persian/Arabic glyphs. -->
+<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+    <font android:font="@font/manrope_700" android:fontStyle="normal" android:fontWeight="700" />
+    <font android:font="@font/vazirmatn_700" android:fontStyle="normal" android:fontWeight="700" />
+</font-family>

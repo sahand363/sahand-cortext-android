@@ -1,0 +1,64 @@
+name: Build APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      # No Gradle wrapper jar in the repo: install Gradle directly.
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Read version
+        id: ver
+        run: |
+          name=$(grep -oP 'versionName = "\K[^"]+' app/build.gradle.kts)
+          code=$(grep -oP 'versionCode = \K[0-9]+' app/build.gradle.kts)
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+
+      # Signed with the committed debug.keystore (project root), the same
+      # key build-manual.sh uses, so each APK installs over the previous one.
+      - name: Build debug APK
+        run: |
+          rm -f local.properties
+          gradle --no-daemon assembleDebug
+          mkdir -p dist
+          cp app/build/outputs/apk/debug/app-debug.apk "dist/CorText-Chat-v${{ steps.ver.outputs.name }}.apk"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: CorText-Chat-v${{ steps.ver.outputs.name }}
+          path: dist/*.apk
+
+      # One release per versionName (tag v<versionName>). Pushing again
+      # without a version bump replaces that release's APK.
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          tag="v${{ steps.ver.outputs.name }}"
+          apk="dist/CorText-Chat-${tag}.apk"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release upload "$tag" "$apk" --clobber
+          else
+            gh release create "$tag" "$apk" --target "$GITHUB_SHA" \
+              --title "CorText Chat ${tag}" \
+              --notes "Android APK (versionCode ${{ steps.ver.outputs.code }}), built from ${GITHUB_SHA}."
+          fi

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- No package="" here: the Android Gradle Plugin takes it from
+         `namespace` in app/build.gradle.kts and rejects it in the manifest.
+         build-manual.sh adds it to a temporary copy for aapt2. -->
+
+    <!-- min/target SDK live in app/build.gradle.kts (Gradle) and are passed
+         to aapt2 by build-manual.sh (--min-sdk-version / --target-sdk-version).
+         They must NOT be declared here: the Android Gradle Plugin rejects
+         uses-sdk in the manifest. -->
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.CorTextChat.Light"
+        android:usesCleartextTraffic="true">
+
+        <!-- usesCleartextTraffic is required: the app talks plain HTTP to a
+             bare IP first (no SSL), and upgrades to HTTPS only when a
+             certificate is present. Without this flag Android 9+ blocks
+             every plain-HTTP request. The content is still encrypted by
+             the app-layer cipher (see Crypto.kt), so plain HTTP here does
+             not mean plaintext chat. -->
+
+        <activity
+            android:name=".ChatListActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:label="Settings"
+            android:windowSoftInputMode="adjustResize" />
+
+    </application>
+</manifest>

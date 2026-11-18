@@ -3,7 +3,7 @@
 A minimal Android app that talks to a CorText hub. Main chat only —
 nothing else. The other capabilities stay in the web UI.
 
-- Package `com.sahand.cortextchat`, version 1.4.0 (versionCode 7).
+- Package `com.sahand.cortextchat`, version 1.4.3 (versionCode 10).
 - Three screens: **Chat list**, **Chat**, and **Settings**. No tabs,
   no sidebar.
 - No third-party dependencies: Android framework + Kotlin stdlib only,
@@ -33,6 +33,13 @@ nothing else. The other capabilities stay in the web UI.
   reply begins below; while streaming it only follows to the bottom
   while the user is already there — scrolling up to read stops the
   auto-scroll until they scroll back down.
+- **Reply sync (1.4.3)**: if a stream ends without the reply on screen
+  — cut before `done` by a proxy or the network, or a model that
+  answered without streaming any text — the app fetches the chat
+  history from the hub instead of dropping the bubble (and re-checks a
+  few times while the hub finishes), so you never have to close and
+  reopen the chat to see an answer. A network error mid-stream no
+  longer retries on the other scheme (that re-sent the message).
 
 ## How it connects (v2 — token-based, PROTOCOL-v2.md)
 
@@ -107,6 +114,16 @@ the hub is gone; v1's username/password + tunnel key are gone.)
   ignored. Open the app, paste the token from the hub's Mobile page,
   and save — that activates it.
 
+## Download (GitHub Actions)
+
+Every push to `main` builds the APK in GitHub Actions
+(`.github/workflows/android.yml`) and publishes it on the
+**Releases** page as `CorText-Chat-v<version>.apk` (tag `v<version>`,
+from `versionName` in `app/build.gradle.kts`). It is signed with the
+committed `debug.keystore`, so it installs over earlier builds.
+Bump `versionCode`/`versionName` for a new release; pushing without a
+bump replaces that release's APK.
+
 ## Build
 
 On a normal machine / in Android Studio:
@@ -127,10 +144,10 @@ export KOTLINC_HOME=$HOME/android-build/kotlinc
 ./build-manual.sh
 ```
 
-This produces `build/manual/app-debug.apk` (and a copy,
-`CorText-Chat-v1.4.0.apk`, at the project root). It is signed with
-the `debug.keystore` in the project root, so rebuilds install over
-each other. Never commit `debug.keystore` (it is gitignored).
+This produces `build/manual/app-debug.apk`. It is signed with the
+`debug.keystore` in the project root, so rebuilds install over each
+other. The keystore is committed on purpose (Actions signs with it);
+it is a debug key, not a Play Store key.
 
 Note: `d8` prints a harmless warning about "malformed kotlin.Metadata"
 (kotlinc 2.0.0 is newer than the R8 bundled with build-tools 34.0.0).

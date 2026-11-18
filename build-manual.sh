@@ -27,9 +27,14 @@ echo "== aapt2 compile resources =="
 "$AAPT2" compile --dir app/src/main/res -o "$OUT/compiled.zip"
 
 echo "== aapt2 link (manifest + resources, generates R.java) =="
+# aapt2 needs the package in the manifest; Gradle forbids it there (it
+# uses namespace). Add it to a temporary copy for the manual build only.
+sed 's#<manifest xmlns:android="http://schemas.android.com/apk/res/android">#<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.sahand.cortextchat">#' \
+  app/src/main/AndroidManifest.xml > "$OUT/AndroidManifest.xml"
 "$AAPT2" link -I "$ANDROID_JAR" \
-  --manifest app/src/main/AndroidManifest.xml \
-  --version-code 9 --version-name 1.4.2 \
+  --manifest "$OUT/AndroidManifest.xml" \
+  --version-code 10 --version-name 1.4.3 \
+  --min-sdk-version 26 --target-sdk-version 34 \
   -o "$OUT/app-unsigned.apk" \
   --java "$OUT/gen" \
   -R "$OUT/compiled.zip" \

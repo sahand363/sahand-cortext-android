@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CorText Chat</string>
+    <string name="title">CorText</string>
+    <string name="hint_message">Type a message…</string>
+    <string name="send">Send</string>
+    <string name="thinking">Thinking…</string>
+    <string name="settings">Settings</string>
+    <string name="save_open_chat">Save &amp; open chat</string>
+    <string name="test_connection">Test connection</string>
+    <string name="logout">Log out</string>
+    <string name="new_chat">New chat</string>
+    <string name="mode">Connection</string>
+    <string name="mode_direct">Direct (to the hub)</string>
+    <string name="mode_relay">Relay (through the middle server)</string>
+    <string name="host">Host (IP or domain)</string>
+    <string name="port">Port</string>
+    <string name="token">Mobile token</string>
+    <string name="token_hint">Paste the token from the hub\u2019s Mobile page</string>
+    <string name="ssl">SSL</string>
+    <string name="ssl_auto">Auto (try HTTPS, fall back to HTTP)</string>
+    <string name="ssl_on">On (HTTPS only)</string>
+    <string name="ssl_off">Off (HTTP only)</string>
+    <string name="theme">Theme</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="model">Model</string>
+    <string name="model_hub_default">Hub default</string>
+    <string name="persona">Persona</string>
+    <string name="persona_main_chat">Main chat</string>
+    <string name="loading_chats">Loading chats…</string>
+    <string name="no_chats">No chats yet — tap ＋ to start one.</string>
+    <string name="could_not_load_chats">Could not load chats.</string>
+    <string name="starting_chat">Starting a new chat…</string>
+    <string name="pin">Pin</string>
+    <string name="unpin">Unpin</string>
+    <string name="delete_chat">Delete</string>
+    <string name="delete_chat_confirm">Delete this chat? This cannot be undone.</string>
+    <string name="cancel">Cancel</string>
+</resources>

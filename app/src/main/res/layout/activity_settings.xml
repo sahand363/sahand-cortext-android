@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/chatBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- Top row: back button (returns to the chat without saving)
+             + the title in the panel's display font. The back button is
+             hidden on first launch, when there is no chat to go back to. -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@android:color/transparent"
+                android:text="←"
+                android:textColor="?attr/chatTextSecondary"
+                android:textSize="22sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/cortext_display"
+                android:text="@string/settings"
+                android:textColor="?attr/chatTextPrimary"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/mode"
+            android:textColor="?attr/chatTextSecondary"
+            android:textSize="14sp" />
+
+        <Spinner
+            android:id="@+id/spinnerMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/host"
+            android:textColor="?attr/chatTextSecondary"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/etHost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_input"
+            android:hint="205.234.152.182"
+            android:inputType="textUri"
+            android:padding="12dp"
+            android:textColor="?attr/chatInputText"
+            android:textColorHint="?attr/chatTextSecondary" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/port"
+            android:textColor="?attr/chatTextSecondary"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/etPort"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_input"
+            android:hint="8788"
+            android:inputType="number"
+            android:padding="12dp"
+            android:textColor="?attr/chatInputText"
+            android:textColorHint="?attr/chatTextSecondary" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/token"
+            android:textColor="?attr/chatTextSecondary"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/etToken"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_input"
+            android:hint="@string/token_hint"
+            android:inputType="textPassword"
+            android:padding="12dp"
+            android:textColor="?attr/chatInputText"
+            android:textColorHint="?attr/chatTextSecondary" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/ssl"
+            android:textColor="?attr/chatTextSecondary"
+            android:textSize="14sp" />
+
+        <Spinner
+            android:id="@+id/spinnerSsl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/theme"
+            android:textColor="?attr/chatTextSecondary"
+            android:textSize="14sp" />
+
+        <Spinner
+            android:id="@+id/spinnerTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/model"
+            android:textColor="?attr/chatTextSecondary"
+            android:textSize="14sp" />
+
+        <Spinner
+            android:id="@+id/spinnerModel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/persona"
+            android:textColor="?attr/chatTextSecondary"
+            android:textSize="14sp" />
+
+        <Spinner
+            android:id="@+id/spinnerPersona"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/bg_button_primary"
+            android:padding="12dp"
+            android:text="@string/save_open_chat"
+            android:textColor="?attr/chatAccentText" />
+
+        <Button
+            android:id="@+id/btnTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_button_secondary"
+            android:padding="12dp"
+            android:text="@string/test_connection"
+            android:textColor="?attr/chatTextPrimary" />
+
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_button_secondary"
+            android:padding="12dp"
+            android:text="@string/logout"
+            android:textColor="?attr/chatTextPrimary" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="The token comes from the hub\u2019s Mobile page — paste it here and it is both your login and your encryption key. Direct connects straight to the hub; Relay connects through the middle server, which only forwards your chat to the hub. The token encrypts your chat even without SSL; if you add a certificate later, the app switches to HTTPS automatically."
+            android:textColor="?attr/chatTextSecondary"
+            android:textSize="13sp" />
+    </LinearLayout>
+</ScrollView>

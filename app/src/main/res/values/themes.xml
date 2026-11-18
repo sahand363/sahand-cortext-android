@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.CorTextChat.Light" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:colorPrimary">@color/light_accent</item>
+        <item name="android:colorAccent">@color/light_accent</item>
+        <item name="android:fontFamily">@font/cortext_text</item>
+        <item name="android:windowBackground">@color/light_background</item>
+        <item name="chatBackground">@color/light_background</item>
+        <item name="chatTopBarBackground">@color/light_panel</item>
+        <item name="chatPanel2">@color/light_panel2</item>
+        <item name="chatTextPrimary">@color/light_text_primary</item>
+        <item name="chatTextSecondary">@color/light_text_secondary</item>
+        <item name="chatBubbleUser">@color/light_bubble_user</item>
+        <item name="chatBubbleUserText">@color/light_bubble_user_text</item>
+        <item name="chatBubbleAssistant">@color/light_bubble_assistant</item>
+        <item name="chatBubbleAssistantText">@color/light_bubble_assistant_text</item>
+        <item name="chatInputBackground">@color/light_input_background</item>
+        <item name="chatInputText">@color/light_input_text</item>
+        <item name="chatAccent">@color/light_accent</item>
+        <item name="chatAccentText">@color/light_accent_text</item>
+        <item name="chatDivider">@color/light_divider</item>
+        <item name="chatError">@color/light_error</item>
+    </style>
+
+    <style name="Theme.CorTextChat.Dark" parent="android:Theme.Material.NoActionBar">
+        <item name="android:colorPrimary">@color/dark_accent</item>
+        <item name="android:colorAccent">@color/dark_accent</item>
+        <item name="android:fontFamily">@font/cortext_text</item>
+        <item name="android:windowBackground">@color/dark_background</item>
+        <item name="chatBackground">@color/dark_background</item>
+        <item name="chatTopBarBackground">@color/dark_panel</item>
+        <item name="chatPanel2">@color/dark_panel2</item>
+        <item name="chatTextPrimary">@color/dark_text_primary</item>
+        <item name="chatTextSecondary">@color/dark_text_secondary</item>
+        <item name="chatBubbleUser">@color/dark_bubble_user</item>
+        <item name="chatBubbleUserText">@color/dark_bubble_user_text</item>
+        <item name="chatBubbleAssistant">@color/dark_bubble_assistant</item>
+        <item name="chatBubbleAssistantText">@color/dark_bubble_assistant_text</item>
+        <item name="chatInputBackground">@color/dark_input_background</item>
+        <item name="chatInputText">@color/dark_input_text</item>
+        <item name="chatAccent">@color/dark_accent</item>
+        <item name="chatAccentText">@color/dark_accent_text</item>
+        <item name="chatDivider">@color/dark_divider</item>
+        <item name="chatError">@color/dark_error</item>
+    </style>
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Body font, matching the CorText panel: DM Sans for Latin, with
+     Vazirmatn as the fallback for Persian/Arabic glyphs (DM Sans has
+     no Arabic glyphs, so the system falls through to Vazirmatn for
+     those characters in the same TextView). All three are OFL-licensed
+     and bundled here (see README for sources). -->
+<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+    <font android:font="@font/dm_sans_400" android:fontStyle="normal" android:fontWeight="400" />
+    <font android:font="@font/dm_sans_500" android:fontStyle="normal" android:fontWeight="500" />
+    <font android:font="@font/dm_sans_700" android:fontStyle="normal" android:fontWeight="700" />
+    <font android:font="@font/vazirmatn_400" android:fontStyle="normal" android:fontWeight="400" />
+    <font android:font="@font/vazirmatn_500" android:fontStyle="normal" android:fontWeight="500" />
+    <font android:font="@font/vazirmatn_700" android:fontStyle="normal" android:fontWeight="700" />
+</font-family>
