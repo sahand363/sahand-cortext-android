@@ -3,6 +3,8 @@
 A minimal Android app that talks to a CorText hub. Main chat only —
 nothing else. The other capabilities stay in the web UI.
 
+<p align="center"><img src="docs/screenshots/chat.webp" alt="CorText Chat — chat screen" width="300"></p>
+
 - Package `com.sahand.cortextchat`, version 1.4.3 (versionCode 10).
 - Three screens: **Chat list**, **Chat**, and **Settings**. No tabs,
   no sidebar.
