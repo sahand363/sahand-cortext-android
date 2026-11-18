@@ -6,7 +6,7 @@
          build-manual.sh adds it to a temporary copy for aapt2. -->
 
     <!-- min/target SDK live in app/build.gradle.kts (Gradle) and are passed
-         to aapt2 by build-manual.sh (--min-sdk-version / --target-sdk-version).
+         to aapt2 by build-manual.sh (as aapt2 min/target SDK flags).
          They must NOT be declared here: the Android Gradle Plugin rejects
          uses-sdk in the manifest. -->
 
