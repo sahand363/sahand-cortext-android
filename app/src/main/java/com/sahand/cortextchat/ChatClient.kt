@@ -209,7 +209,7 @@ class ChatClient(private val prefs: SettingsStore) {
 
     /**
      * Is host:port a cortext-relay rather than the hub itself? The relay
-     * forwards /api/mobile/* unchanged, so the hub can't tell the two
+     * forwards every mobile request unchanged, so the hub can't tell the two
      * apart; only the relay answers GET / with {"service": "cortext-relay"}.
      * Uses the scheme health() just found. Any failure counts as "hub".
      */
