@@ -167,7 +167,7 @@ class MainActivity : Activity() {
         // NOTE: the chosen model is deliberately NOT part of the
         // fingerprint. Changing the model must not start a new session
         // — only a server/token change clears it (see onResume).
-        return "${prefs.mode}|${prefs.host}|${prefs.port}|${prefs.token}"
+        return "${prefs.host}|${prefs.port}|${prefs.token}"
     }
 
     private fun refreshList() {

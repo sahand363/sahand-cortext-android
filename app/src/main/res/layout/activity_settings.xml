@@ -43,19 +43,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="@string/mode"
-            android:textColor="?attr/chatTextSecondary"
-            android:textSize="14sp" />
-
-        <Spinner
-            android:id="@+id/spinnerMode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:text="@string/host"
             android:textColor="?attr/chatTextSecondary"
             android:textSize="14sp" />

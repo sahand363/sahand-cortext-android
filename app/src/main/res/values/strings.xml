@@ -10,9 +10,6 @@
     <string name="test_connection">Test connection</string>
     <string name="logout">Log out</string>
     <string name="new_chat">New chat</string>
-    <string name="mode">Connection</string>
-    <string name="mode_direct">Direct (to the hub)</string>
-    <string name="mode_relay">Relay (through the middle server)</string>
     <string name="host">Host (IP or domain)</string>
     <string name="port">Port</string>
     <string name="token">Mobile token</string>

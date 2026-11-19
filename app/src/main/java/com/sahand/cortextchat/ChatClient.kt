@@ -207,6 +207,34 @@ class ChatClient(private val prefs: SettingsStore) {
         throw ApiException(lastError?.message ?: "Could not reach the server")
     }
 
+    /**
+     * Is host:port a cortext-relay rather than the hub itself? The relay
+     * forwards /api/mobile/* unchanged, so the hub can't tell the two
+     * apart; only the relay answers GET / with {"service": "cortext-relay"}.
+     * Uses the scheme health() just found. Any failure counts as "hub".
+     */
+    fun isRelay(): Boolean {
+        val scheme = prefs.lastScheme.ifBlank { "https" }
+        return try {
+            val conn = (URL(baseUrl(scheme) + "/").openConnection() as HttpURLConnection).apply {
+                requestMethod = "GET"
+                connectTimeout = 10_000
+                readTimeout = 10_000
+            }
+            try {
+                if (conn.responseCode !in 200..299) return false
+                val text = BufferedReader(
+                    InputStreamReader(conn.inputStream, Charsets.UTF_8)
+                ).use { it.readText() }
+                JSONObject(text).optString("service") == "cortext-relay"
+            } finally {
+                conn.disconnect()
+            }
+        } catch (e: Exception) {
+            false
+        }
+    }
+
     /** Create a CorText session. personaId "" = main chat; a persona id
      *  starts a chat with that persona (the hub validates it and falls
      *  back to main chat when unknown). Also the encrypted check that

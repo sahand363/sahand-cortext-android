@@ -35,7 +35,7 @@ class SettingsStore(context: Context) {
         set(v) = prefs.edit().putString("host", v).apply()
 
     var port: Int
-        get() = prefs.getInt("port", 8788)
+        get() = prefs.getInt("port", 8787)
         set(v) = prefs.edit().putInt("port", v).apply()
 
     /** The mobile token from the hub's Mobile page. Encryption key + auth. */

@@ -10,7 +10,8 @@ import android.widget.Spinner
 import android.widget.Toast
 
 /**
- * The one settings screen (v2, PROTOCOL-v2.md): mode (Direct/Relay),
+ * The one settings screen (v2, PROTOCOL-v2.md): one address (hub or relay,
+ * detected on connect),
  * host, port, TOKEN, SSL (Auto/On/Off), theme, and the MODEL picker.
  * Shown on first launch (no settings saved) and from the gear on the
  * chat screen.
@@ -41,14 +42,11 @@ class SettingsActivity : Activity() {
     private lateinit var etHost: EditText
     private lateinit var etPort: EditText
     private lateinit var etToken: EditText
-    private lateinit var spinnerMode: Spinner
     private lateinit var spinnerSsl: Spinner
     private lateinit var spinnerTheme: Spinner
     private lateinit var spinnerModel: Spinner
     private lateinit var spinnerPersona: Spinner
 
-    /** The mode the port field was last filled for (for the port default). */
-    private var lastMode: String = "direct"
 
     /** The hub's models (index 0 in the spinner is always "Hub default"). */
     private var modelOptions: List<ChatClient.ModelOption> = emptyList()
@@ -77,7 +75,6 @@ class SettingsActivity : Activity() {
         etHost = findViewById(R.id.etHost)
         etPort = findViewById(R.id.etPort)
         etToken = findViewById(R.id.etToken)
-        spinnerMode = findViewById(R.id.spinnerMode)
         spinnerSsl = findViewById(R.id.spinnerSsl)
         spinnerTheme = findViewById(R.id.spinnerTheme)
         spinnerModel = findViewById(R.id.spinnerModel)
@@ -159,34 +156,6 @@ class SettingsActivity : Activity() {
         }
         loadPersonas()
 
-        lastMode = prefs.mode
-
-        spinnerMode.adapter = ArrayAdapter(
-            this, android.R.layout.simple_spinner_item,
-            listOf(getString(R.string.mode_direct), getString(R.string.mode_relay))
-        ).apply { setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
-        spinnerMode.setSelection(if (prefs.mode == "relay") 1 else 0)
-        spinnerMode.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: android.widget.AdapterView<*>?, view: android.view.View?,
-                position: Int, id: Long
-            ) {
-                val newMode = if (position == 1) "relay" else "direct"
-                // Keep the port in step with the mode, unless the user
-                // typed a custom port: Direct defaults to the hub
-                // (8788), Relay to the relay (8080).
-                val portText = etPort.text.toString().trim()
-                val oldDefault = defaultPort(lastMode).toString()
-                if (portText.isEmpty() || portText == oldDefault) {
-                    etPort.setText(defaultPort(newMode).toString())
-                }
-                etPort.hint = defaultPort(newMode).toString()
-                lastMode = newMode
-            }
-
-            override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
-        }
-
         spinnerSsl.adapter = ArrayAdapter(
             this, android.R.layout.simple_spinner_item,
             listOf(
@@ -228,7 +197,7 @@ class SettingsActivity : Activity() {
         // Fill the fields from the saved settings.
         etHost.setText(prefs.host)
         etPort.setText(if (prefs.port != 0) prefs.port.toString() else "")
-        etPort.hint = defaultPort(prefs.mode).toString()
+        etPort.hint = DEFAULT_PORT.toString()
         etToken.setText(prefs.token)
 
         findViewById<Button>(R.id.btnSave).setOnClickListener {
@@ -250,7 +219,9 @@ class SettingsActivity : Activity() {
         }
     }
 
-    private fun defaultPort(mode: String): Int = if (mode == "relay") 8080 else 8788
+    /** The hub's mobile port. A relay usually listens on 8080 instead;
+     *  the app tells which one it reached when it connects. */
+    private val DEFAULT_PORT = 8787
 
     /**
      * Validate the fields and save them. Returns false (with a Toast)
@@ -276,7 +247,6 @@ class SettingsActivity : Activity() {
             ).show()
             return false
         }
-        val mode = if (spinnerMode.selectedItemPosition == 1) "relay" else "direct"
         val ssl = when (spinnerSsl.selectedItemPosition) {
             1 -> "on"
             2 -> "off"
@@ -318,9 +288,8 @@ class SettingsActivity : Activity() {
         }
         // A different server or token means the saved chat session is
         // meaningless.
-        val serverChanged = mode != prefs.mode || host != prefs.host ||
+        val serverChanged = host != prefs.host ||
             port != prefs.port || token != prefs.token
-        prefs.mode = mode
         prefs.host = host
         prefs.port = port
         prefs.token = token
@@ -456,9 +425,15 @@ class SettingsActivity : Activity() {
                         prefs.sessionId = client.createSession(prefs.personaId)
                     }
                 }
+                // Which one answered? Shown to the user; nothing else
+                // depends on it (the relay forwards everything unchanged).
+                val viaRelay = client.isRelay()
+                prefs.mode = if (viaRelay) "relay" else "direct"
                 runOnUiThread {
                     Toast.makeText(
-                        this, "Connected — token accepted.",
+                        this,
+                        if (viaRelay) "Connected via relay — token accepted."
+                        else "Connected directly to the hub — token accepted.",
                         Toast.LENGTH_SHORT
                     ).show()
                     // Now that we are connected, the hub's model and

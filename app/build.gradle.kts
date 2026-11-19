@@ -11,8 +11,8 @@ android {
         applicationId = "com.sahand.cortextchat"
         minSdk = 26
         targetSdk = 34
-        versionCode = 10
-        versionName = "1.4.3"
+        versionCode = 11
+        versionName = "1.4.4"
     }
 
     // Updates only install over the old version when signed with the SAME

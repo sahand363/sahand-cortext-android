@@ -11,7 +11,7 @@ You need a running Sahand-CorText hub to use it (see
 
 <p align="center"><img src="docs/screenshots/chat.webp" alt="CorText Chat — chat screen" width="300"></p>
 
-- Package `com.sahand.cortextchat`, version 1.4.3 (versionCode 10).
+- Package `com.sahand.cortextchat`, version 1.4.4 (versionCode 11).
 - Three screens: **Chat list**, **Chat**, and **Settings**. No tabs,
   no sidebar.
 - No third-party dependencies: Android framework + Kotlin stdlib only,
@@ -56,8 +56,9 @@ You need a running Sahand-CorText hub to use it (see
 2. In the panel, open **Mobile App** and turn mobile access on. The
    page shows the **token** and the hub's port.
 3. Install the APK on your phone and open **Settings**:
-   - **Server**: the hub's IP or domain (or the relay's, see below).
-   - **Mode**: *Direct* or *Relay*.
+   - **Server**: the hub's IP or domain, or the relay's (see below).
+     There is no Direct/Relay switch: the app works out which one it
+     reached and says so when it connects.
    - **Port**: the hub's port from the Mobile App page (8787 on a
      default install), or the relay's port (8080 by default).
    - **Token**: paste the token from the Mobile App page.
@@ -76,11 +77,11 @@ The hub owns the mobile feature: the app only talks to the hub's
 never your phone or its IP. Chats are the same ones the web panel
 shows, so a chat started in one place continues in the other.
 
-- **Direct mode**: the app connects straight to the hub. Use it when
+- **Direct**: the app connects straight to the hub. Use it when
   the phone can reach the hub's port (same network, VPN, or an open
   port). If you put the hub behind a domain with HTTPS (the control
   menu's Caddy option), use the domain and port 443.
-- **Relay mode**: the app connects to `cortext-relay` on a middle
+- **Relay**: the app connects to `cortext-relay` on a middle
   server, which forwards to the hub. Useful when the hub itself should
   not be exposed, or the phone reaches the middle server more easily.
   The relay is a dumb pass-through: it holds no token, never
