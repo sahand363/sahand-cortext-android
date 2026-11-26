@@ -1,5 +1,7 @@
 # CorText Chat — Android app (main chat only)
 
+<p align="center"><img src="docs/icon.png" width="120"></p>
+
 The Android companion for **[Sahand-CorText](https://github.com/sahand363/sahand-cortext)**,
 the self-hosted AI workspace. It is a minimal client for the hub's
 main chat — nothing else; the other capabilities stay in the web UI.
@@ -11,7 +13,7 @@ You need a running Sahand-CorText hub to use it (see
 
 <p align="center"><img src="docs/screenshots/chat.webp" alt="CorText Chat — chat screen" width="300"></p>
 
-- Package `com.sahand.cortextchat`, version 1.4.4 (versionCode 11).
+- Package `com.sahand.cortextchat`, version 1.4.5 (versionCode 12).
 - Three screens: **Chat list**, **Chat**, and **Settings**. No tabs,
   no sidebar.
 - No third-party dependencies: Android framework + Kotlin stdlib only,

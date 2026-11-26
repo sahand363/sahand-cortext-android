@@ -33,7 +33,7 @@ sed 's#<manifest xmlns:android="http://schemas.android.com/apk/res/android">#<ma
   app/src/main/AndroidManifest.xml > "$OUT/AndroidManifest.xml"
 "$AAPT2" link -I "$ANDROID_JAR" \
   --manifest "$OUT/AndroidManifest.xml" \
-  --version-code 11 --version-name 1.4.4 \
+  --version-code 12 --version-name 1.4.5 \
   --min-sdk-version 26 --target-sdk-version 34 \
   -o "$OUT/app-unsigned.apk" \
   --java "$OUT/gen" \
